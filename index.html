@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Posts WP</title>
+  <style>
+    body 
+    {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header 
+    {
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    main 
+    {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 
+    {
+      text-align: center;
+      color: #222;
+      margin-bottom: 20px;
+    }
+
+    ul 
+    {
+      list-style: none;
+      padding: 0;
+    }
+
+    li 
+    {
+      background-color: #e9e9e9;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    li:hover 
+    {
+      background-color: #d6f5d6;
+    }
+
+    a 
+    {
+      color: #333;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover 
+    {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📰 Ultimi Post da WordPress</h1>
+  </header>
+
+  <main>
+    <h2>Elenco Articoli</h2>
+    <ul id="posts"></ul>
+  </main>
+
+  <script>
+    const api = 'https://wordpress.org/news/wp-json/wp/v2/posts';
+    const ul  = document.getElementById('posts');
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('GET', api);
+
+    xhr.onreadystatechange = () => 
+    {
+      if (xhr.readyState === 4) 
+      {
+        if (xhr.status === 200) 
+        {
+          JSON.parse(xhr.responseText).forEach(p => 
+          {
+            const li = document.createElement('li');
+            const a  = document.createElement('a');
+            a.href = p.link;
+            a.textContent = p.title.rendered;
+            a.target = '_blank';
+            li.append(a);
+            ul.append(li);
+          });
+        }
+      }
+    };
+
+    xhr.send();
+  </script>
+</body>
+</html>
